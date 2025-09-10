@@ -18,7 +18,7 @@ export const MainPageContainer = () => {
   const [showTimelineManager, setShowTimelineManager] = useState(false);
 
   const handlePreview = () => {
-    window.open('/preview', '_blank');
+    window.open('/#/preview', '_blank');
   };
 
   const handleClear = () => {
