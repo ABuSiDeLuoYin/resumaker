@@ -7,6 +7,13 @@ import { ClearConfirmDialog } from '@/components/dialogs/ClearConfirmDialog';
 import { ActionButtons } from '@/components/layout/ActionButtons';
 import { AppFooter } from '@/components/layout/AppFooter';
 import { resetResumeAtom, resumeAtom } from '@/store/resumeStore';
+import {FileExporter, FileImporter} from "@/lib/fileUtils.ts";
+
+import type{
+  Resume
+} from "@/types/resume.ts";
+
+
 
 // 懒加载模块管理器（无loading，包很小会一闪而过）
 const SectionManager = React.lazy(() => import('@/components/dialogs/TimelineManagerDialog'));
@@ -17,6 +24,27 @@ export const MainPageContainer = () => {
   const [showClearDialog, setShowClearDialog] = useState(false);
   const [showTimelineManager, setShowTimelineManager] = useState(false);
 
+  const handleImport = () => {
+
+    const fileInput = FileImporter.createFileInput('.json');
+
+    fileInput.addEventListener('change', async (event) => {
+      // try {
+      let file = (event.target as HTMLInputElement).files?.[0];
+      if (!file) return;
+      let data = await FileImporter.readJSONFile<Resume>(file);
+
+      //console.log('导入的JSON数据:', data);
+        // 处理导入的数据...
+      localStorage.setItem('resume-data', data.valueOf().toString());
+      location.reload();
+    });
+    fileInput.click();
+
+  }
+  const handleExport = () => {
+    FileExporter.exportJSON(localStorage.getItem('resume-data'), '简历导出.json')
+  }
   const handlePreview = () => {
     window.open('/#/preview', '_blank');
   };
@@ -41,6 +69,8 @@ export const MainPageContainer = () => {
           onLayoutChange={handleLayoutChange}
         /> */}
         <ActionButtons
+          onImport={handleImport}
+          onExport={handleExport}
           onPreview={handlePreview}
           onClear={() => setShowClearDialog(true)}
           onManageTimeline={handleManageTimeline}

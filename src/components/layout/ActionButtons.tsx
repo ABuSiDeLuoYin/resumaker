@@ -2,12 +2,14 @@ import { Eye, Trash2, Settings } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 interface ActionButtonsProps {
+  onImport: () => void;
+  onExport: () => void;
   onPreview: () => void;
   onClear: () => void;
   onManageTimeline: () => void;
 }
 
-export const ActionButtons = ({ onPreview, onClear, onManageTimeline }: ActionButtonsProps) => {
+export const ActionButtons = ({ onImport,onExport,onPreview, onClear, onManageTimeline }: ActionButtonsProps) => {
   return (
     <>
       <Button
@@ -27,9 +29,26 @@ export const ActionButtons = ({ onPreview, onClear, onManageTimeline }: ActionBu
         className="flex items-center space-x-2"
       >
         <Eye className="h-4 w-4" />
-        <span className="hidden sm:inline">预览 & 导出</span>
+        <span className="hidden sm:inline">预览 & 打印</span>
       </Button>
-
+      <Button
+          onClick={onExport}
+          variant="outline"
+          size="sm"
+          className="flex items-center space-x-2"
+      >
+          <Eye className="h-4 w-4" />
+          <span className="hidden sm:inline">导出</span>
+      </Button>
+      <Button
+        onClick={onImport}
+        variant="outline"
+        size="sm"
+        className="flex items-center space-x-2"
+      >
+        <Eye className="h-4 w-4" />
+        <span className="hidden sm:inline">导入</span>
+      </Button>
       <Button
         onClick={onClear}
         variant="outline"
